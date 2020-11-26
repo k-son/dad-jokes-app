@@ -49,3 +49,30 @@
   color: #fff;
   text-align: center;
 }
+
+.JokeList-getmore {
+  width: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  word-spacing: .3rem;
+  border: none;
+  border-radius: 2rem;
+  margin: 2rem;
+  padding: 1rem;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(179, 229, 252) 0%,
+    rgb(179, 229, 252) 50%,
+    rgb(240, 98, 146) 50%,
+    rgb(240, 98, 146) 100%
+  );
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: .8s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.JokeList-getmore:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
