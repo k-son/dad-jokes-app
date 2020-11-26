@@ -25,32 +25,37 @@ class JokeList extends Component {
   }
 
   async getJokes() {
-    let jokes = [];
-    // while beacouse if there are duplicates (you can get more instances of thesame joke) it will loop further
-    while (jokes.length < this.props.numJokesToGet) {
-      let res = await axios.get('https://icanhazdadjoke.com/', {
-        headers: {
-          Accept: 'application/json'
-        }
-      });
-
-      const newJoke = res.data.joke;
-      if (!this.seenJokes.has(newJoke)) {
-        jokes.push({
-          id: uuidv4(),
-          text: newJoke,
-          votes: 0
+    try {
+      let jokes = [];
+      // while beacouse if there are duplicates (you can get more instances of thesame joke) it will loop further
+      while (jokes.length < this.props.numJokesToGet) {
+        let res = await axios.get('https://icanhazdadjoke.com/', {
+          headers: {
+            Accept: 'application/json'
+          }
         });
-      }
-    }
 
-    this.setState(st => ({
-      loading: false,
-      jokes: [...st.jokes, ...jokes]
-    }),
-      // optional second argument, a callback function executed once setState is completed
-      () => window.localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
-    );
+        const newJoke = res.data.joke;
+        if (!this.seenJokes.has(newJoke)) {
+          jokes.push({
+            id: uuidv4(),
+            text: newJoke,
+            votes: 0
+          });
+        }
+      }
+
+      this.setState(st => ({
+        loading: false,
+        jokes: [...st.jokes, ...jokes]
+      }),
+        // optional second argument, a callback function executed once setState is completed
+        () => window.localStorage.setItem('jokes', JSON.stringify(this.state.jokes))
+      );
+    } catch(e) {
+      alert(e);
+      this.setState({loading: false});
+    }
   }
 
   handleVote(id, delta) {
