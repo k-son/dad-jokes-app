@@ -12,11 +12,15 @@ class JokeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      jokes: []
-    }
+      jokes: JSON.parse(window.localStorage.getItem('jokes') || '[]')
+    };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    if (this.state.jokes.length === 0) this.getJokes();
+  }
+  
+  async getJokes() {
     let jokes = [];
     // while beacouse if there are duplicates (you can get more instances of thesame joke) it will loop further
     while (jokes.length < this.props.numJokesToGet) {
@@ -31,9 +35,8 @@ class JokeList extends Component {
         votes: 0
       });
     }
-    this.setState({
-      jokes: jokes
-    })
+    this.setState({ jokes: jokes });
+    window.localStorage.setItem('jokes', JSON.stringify(jokes));
   }
 
   handleVote(id, delta) {
