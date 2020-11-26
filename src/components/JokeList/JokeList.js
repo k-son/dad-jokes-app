@@ -15,6 +15,8 @@ class JokeList extends Component {
       jokes: JSON.parse(window.localStorage.getItem('jokes') || '[]'),
       loading: false
     };
+    // list of loaded jokes, to check if new loaded joke isn't a duplicate 
+    this.seenJokes = new Set(this.state.jokes.map(j => j.text));
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -31,12 +33,17 @@ class JokeList extends Component {
           Accept: 'application/json'
         }
       });
-      jokes.push({
-        id: uuidv4(),
-        text: res.data.joke,
-        votes: 0
-      });
+
+      const newJoke = res.data.joke;
+      if (!this.seenJokes.has(newJoke)) {
+        jokes.push({
+          id: uuidv4(),
+          text: newJoke,
+          votes: 0
+        });
+      }
     }
+
     this.setState(st => ({
       loading: false,
       jokes: [...st.jokes, ...jokes]
@@ -77,7 +84,7 @@ class JokeList extends Component {
           <h1 className="JokeList-title">
             <span>Dad</span> Jokes
           </h1>
-          <img src='https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg' />
+          <img src='https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg' alt="rotfl" />
           <button className="JokeList-getmore" onClick={this.handleClick}>New Jokes</button>
         </div>
         <div className="JokeList-jokes">
